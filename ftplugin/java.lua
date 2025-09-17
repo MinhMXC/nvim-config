@@ -1,6 +1,16 @@
+local bundles = {
+  vim.fn.glob(vim.fn.expand '~/.config/nvim/debuggers/com.microsoft.java.debug.plugin-0.53.2.jar', true),
+}
+
 local config = {
   cmd = { vim.fn.expand '~/.local/share/nvim/mason/bin/jdtls' },
   root_dir = vim.fs.dirname(vim.fs.find({ 'gradlew', '.git', 'mvnw' }, { upward = true })[1]),
+  on_attach = function(client, bufnr)
+    require('jdtls').setup_dap { hotcodereplace = 'auto' }
+  end,
+  init_options = {
+    bundles = bundles,
+  },
 }
 require('jdtls').start_or_attach(config)
 
